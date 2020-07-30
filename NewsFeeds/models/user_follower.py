@@ -5,11 +5,11 @@ class UserFollowers:
         return
 
     def get_followers(self, name):
-        return self.user_followers[name]
+        return UserFollowers.user_followers[name]
 
     def add_follower(self, name, following):
-        if name in self.user_followers.keys():
-            self.user_followers[name].append(following)
+        if name in UserFollowers.user_followers.keys():
+            UserFollowers.user_followers[name].append(following)
         else:
-            self.user_followers[name] = []
-            self.user_followers[name].append(following)
+            UserFollowers.user_followers[name] = []
+            UserFollowers.user_followers[name].append(following)

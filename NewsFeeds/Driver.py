@@ -20,4 +20,4 @@ if __name__ == "__main__":
         elif command[0] == "downvote":
             newsfeed.downvote(command[1])
         elif command[0] == "reply":
-            newsfeed.reply(command[1])
+            newsfeed.reply(int(command[1]), command[2])

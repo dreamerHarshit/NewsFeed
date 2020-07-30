@@ -8,6 +8,7 @@ class NewsFeed:
     posts = {}
     users = {}
     user_follower = UserFollowers()
+    post_comments = PostComments()
     posts_id = {}
 
     def __init__(self):
@@ -54,18 +55,22 @@ class NewsFeed:
                     posts.append(p)
             posts = sorted(posts, key=lambda x: (x.score, x.comment_count, x.posted_on), reverse=True)
             for p in posts:
-                print str(p.post_id) + "\n"
-                print p.posted_on.strftime("%d/%m/%Y, %H:%M:%S") + "\n"
-                print p.posted_by.name + "\n"
-                print(str(p.upvote), str(p.downvote))
-                print "\n" + p.content + "\n"
+                print "ID: ", str(p.post_id) + "\n"
+                print "TIME:", p.posted_on.strftime("%d/%m/%Y, %H:%M:%S") + "\n"
+                print "Posted By: ", p.posted_by.name + "\n"
+                print("Upvote: ", str(p.upvote), "Downvote: ",str(p.downvote))
+                print "\nContent: " + p.content + "\n"
+                comments = self.post_comments.get_comments(p.post_id)
+                if comments:
+                    for c in comments:
+                        print "Comment: ", c.content
+                        print "by: ", c.posted_by.name
 
     def follow(self, name):
         following = self.users[name]
         self.user_follower.add_follower(self.current_user, following)
 
     def upvote(self, id):
-        import pdb;pdb.set_trace()
         post = self.posts_id[int(id)]
         post.set_upvote()
 
@@ -73,5 +78,7 @@ class NewsFeed:
         post = self.posts_id[int(id)]
         post.set_downvote()
 
-    def reply(self, id):
-        pass
+    def reply(self, id, content):
+        post = self.posts_id[id]
+        comment = Post(content, self.current_user)
+        self.post_comments.add_comment(comment, post)
